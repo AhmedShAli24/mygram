@@ -3,16 +3,14 @@ from django.http import HttpResponse
 from .models import Photo
 
 
-
-
 def index(request):
-    stored_photos = []
+    stored_photos = {}
     all_photos = Photo.objects.all()
-    for photo in all_photos:
-        stored_photos.append(photo.caption)
-    string_photos = "<br>".join(stored_photos)
+    for i in range(len(all_photos)):
+        stored_photos[i] = all_photos[i].caption
+    #string_photos = "<br>".join(stored_photos)
         
-    return HttpResponse(string_photos)
+    return render(request, "photos/index.html", {'photos': stored_photos})
 
 def photo_details(request, photo_id):
     photo = Photo.objects.get(pk=photo_id)
