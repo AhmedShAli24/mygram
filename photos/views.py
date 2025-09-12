@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Photo
 
@@ -8,8 +8,7 @@ def index(request):
     all_photos = Photo.objects.all()
     for i in range(len(all_photos)):
         stored_photos[i] = all_photos[i].caption
-    #string_photos = "<br>".join(stored_photos)
-        
+           
     return render(request, "photos/index.html", {'photos': stored_photos})
 
 def photo_details(request, photo_id):
