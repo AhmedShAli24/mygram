@@ -1,9 +1,0 @@
-{% if photos %}
-<ul>
-    {%for key, value in photos.items%}
-  <li><a href="{% url 'photos:photo_details' key %}">
-    
-    {{ value }}</a></li>
-  {% endfor %}
-  {%endif %}</p>
-</ul>

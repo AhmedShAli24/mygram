@@ -4,13 +4,15 @@ from .models import Photo
 
 
 def index(request):
-    stored_photos = {}
+    photos = {}
     all_photos = Photo.objects.all()
+    print(all_photos)
     for i in range(len(all_photos)):
-        stored_photos[i] = all_photos[i].caption
+        photos[all_photos[i].id] = all_photos[i].caption
+    print(photos)
            
-    return render(request, "photos/index.html", {'photos': stored_photos})
+    return render(request, "photos/index.html", {'photos': photos})
 
-def photo_details(request, photo_id):
+def details(request, photo_id):
     photo = Photo.objects.get(pk=photo_id)
     return HttpResponse("you got the photo %s" % photo.caption)
