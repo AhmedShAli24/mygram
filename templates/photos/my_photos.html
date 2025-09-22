@@ -1,0 +1,14 @@
+<h2>My Photos</h2>
+<ul>
+  {% for photo in photos %}
+    <li>{% if photo.image %}
+      <strong>{{ photo.caption }}</strong><br>
+      <img src="{{ photo.image.url }}" width="200">
+    </li>
+    {% else %}
+    <p>No image uploaded.</p>
+{% endif %}
+  {% empty %}
+      <p>You haven’t uploaded any photos yet.</p>
+  {% endfor %}
+</ul>
