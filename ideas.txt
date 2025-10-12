@@ -2,10 +2,10 @@ Finished work:
 User logins 
 uploding pictures
 viewing your own pictures
-
-To Do list:
 searching other users
 viewing othes photos
+
+To Do list:
 following other users
 liking other users pics
 comment on a photo
