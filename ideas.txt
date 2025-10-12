@@ -1,0 +1,13 @@
+Finished work:
+User logins 
+uploding pictures
+viewing your own pictures
+
+To Do list:
+searching other users
+viewing othes photos
+following other users
+liking other users pics
+comment on a photo
+Sending messages
+Deploying application to a server

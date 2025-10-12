@@ -1,0 +1,22 @@
+{% if searched_user %}
+  <p>You searched for: <strong>{{ searched_user }}</strong></p>
+
+  {% if photos %}
+    <ul>
+      {% for photo in photos %}
+        <li>
+          <strong>{{ photo.user.username }}</strong> — {{ photo.caption }} <br>
+          {%if photo.image %}
+          <img src="{{ photo.image.url }}" width="300">
+          {% else %}
+          <p> No image </p>
+          {%endif%}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No photos found </p>
+  {% endif %}
+{% else %}
+  <p>Please enter a username to search</p>
+{% endif %}

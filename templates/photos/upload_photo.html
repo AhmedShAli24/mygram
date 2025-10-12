@@ -1,3 +1,11 @@
+<form action= "{% url 'photos:search'%}" method="GET">
+    {% csrf_token %}
+    <input type="text" name="searched" ><br>
+    <button type="submit">search</button>
+  </form>
+  {%if searched %}
+        <p>you searched {{searched}}<p>
+  {%endif%}
 <h2>Upload a Photo</h2>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
