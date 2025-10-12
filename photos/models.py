@@ -24,4 +24,4 @@ class Photo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image =models.ImageField(upload_to='', null=True)
     caption = models.CharField(max_length=200)
-    upload_time = models.DateTimeField(auto_now_add=True, null=True)
+    likes = models.IntegerField(default=0)
