@@ -8,6 +8,14 @@
           <strong>{{ photo.user.username }}</strong> — {{ photo.caption }} <br>
           {%if photo.image %}
           <img src="{{ photo.image.url }}" width="300">
+          <form method="POST" action="{% url 'photos:search' %}?searched={{ searched }}">
+            {% csrf_token %}
+            <input type="hidden" name="photo_id" value="{{ photo.id }}">
+            <input type="hidden" name="searched" value="{{ searched }}">
+            <button type="submit">❤️ Like</button>
+          </form>
+
+          <p>{{photo.likes}}</p>
           {% else %}
           <p> No image </p>
           {%endif%}

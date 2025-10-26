@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
-from .models import Photo
+from django.urls import reverse
+from .models import Photo, UserPhotoLikes
 from .forms import PhotoForm
 
 
@@ -42,27 +43,44 @@ def details(request, photo_id):
 def search(request):
     User = get_user_model()
     searched = request.GET.get('searched', '')
-    if searched:
-        """
-        select u.*
-        from users u
-        where u.username ilike '%ahmed%'
-        limit 1;
-        """
-        searched_user = User.objects.filter(username__icontains = searched)
-        """
-        select p.*
-        from photos p
-        left join users u on (u.id = p.user_id)
-        where u.username ilike '%ahmed%';
-        """
-        photos = Photo.objects.filter(user__username__icontains=searched)
+    
+    searched_user = User.objects.filter(username__icontains = searched).first()
+    photos = Photo.objects.filter(user__username__icontains=searched)
+    
+    if request.method == 'POST':
+        photo_id = request.POST.get('photo_id')
+        print(photo_id)
+        user_id = request.user.id
+        print("+++++++++++++++++")
+        print(user_id)
         
-        print("=====================")
-        print(searched_user.query)
-        print("=====================")
-        print(photos.query)
-        print("=====================")
         
-    return render(request, 'photos/searched.html',  {'searched_user': searched_user.first(), 'photos': photos} )
+        ## if it doesn't exist in UserPhotoLike create it
+        userlike = UserPhotoLikes.objects.filter(user = user_id, photo = photo_id).first()
+        print(userlike)
+        if userlike:
+            userlike.delete()
+        else:
+            new_user_like = UserPhotoLikes(user_id = user_id, photo_id = photo_id)
+            new_user_like.save()
+            print(new_user_like)
+        
+       
+        
+        # photo = get_object_or_404(Photo, id=photo_id)
+        # print(photo)
+        # if photo.likes == 0:
+        #     photo.likes += 1
+        # else:
+        #     photo.likes+=0
+        # photo.save()
+        
+        search_url = reverse('photos:search')
+        print("################")
+        print(search_url)
+        return redirect(f"{search_url}?searched={searched}")
+        
+    return render(request, 'photos/searched.html',  {'searched_user': searched_user, 'photos': photos, 'searched': searched })
+
+
         

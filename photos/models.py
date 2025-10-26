@@ -24,4 +24,8 @@ class Photo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image =models.ImageField(upload_to='', null=True)
     caption = models.CharField(max_length=200)
-    likes = models.IntegerField(default=0)
+
+class UserPhotoLikes(models.Model):
+  user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+  photo = models.ForeignKey(Photo, on_delete=models.DO_NOTHING)
+  likes = models.BooleanField(default=False)
