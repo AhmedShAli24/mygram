@@ -21,11 +21,17 @@ from django.utils import timezone
 
 
 class Photo(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image =models.ImageField(upload_to='', null=True)
-    caption = models.CharField(max_length=200)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  image =models.ImageField(upload_to='', null=True)
+  caption = models.CharField(max_length=200)
 
 class UserPhotoLikes(models.Model):
   user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
   photo = models.ForeignKey(Photo, on_delete=models.DO_NOTHING)
   likes = models.BooleanField(default=False)
+
+## Each comment is tied to a specific user and photo
+class UserComments(models.Model):
+  user= models.ForeignKey(User, on_delete=models.CASCADE) ## if user is deleted all his comment are deleted
+  photo = models.ForeignKey(Photo, on_delete = models.CASCADE)  ## if a post(photo) is deleted the coomment will be deleted 
+  comment = models.CharField(max_length=500)
