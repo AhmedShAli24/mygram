@@ -8,23 +8,50 @@
           <strong>{{ photo.user.username }}</strong> — {{ photo.caption }} <br>
           {%if photo.image %}
           <img src="{{ photo.image.url }}" width="300">
-          <form method="POST" action="{% url 'photos:search' %}?searched={{ searched }}">
-            {% csrf_token %}
-            <input type="hidden" name="photo_id" value="{{ photo.id }}">
-            <input type="hidden" name="searched" value="{{ searched }}">
-            <button type="submit">❤️ Like</button>
+
+            <form method="POST" action="{% url 'photos:search' %}?searched={{ searched }}">
+                {% csrf_token %}
+                <input type="hidden" name="photo_id" value="{{ photo.id }}">
+                <input type="hidden" name="searched" value="{{ searched }}">
+              
+                {%if photo.id in list_of_user_likes %}
+                  <button type="submit"> ❤️ Like</button>
+                {%else%}
+                  <button type="submit">Unlike</button>
+                {%endif%}
           </form>
 
+          <h4>Comments:</h4>
+          {% for comment in photo.usercomments_set.all %}
+            <p><strong>{{ comment.user.username }}</strong>: {{ comment.comment }}</p>
+          {% empty %}
+            <p>No comments</p>
+          {% endfor %}
+          
+          {% if user.is_authenticated %}
+              <form method="POST" action="{% url 'photos:comments' photo.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="searched" value="{{ searched }}">
+                <textarea name="comment_text" placeholder="Write a comment"></textarea>
+                <button type="submit">Post</button>
+              </form>
+            {% else %}
+              <p><a href="{% url 'login' %}">Log in</a> to comment</p>
+            {% endif %}
+
           <p>{{photo.likes}}</p>
+
           {% else %}
           <p> No image </p>
           {%endif%}
+
         </li>
       {% endfor %}
     </ul>
-  {% else %}
-    <p>No photos found </p>
-  {% endif %}
+  
+    {% else %}
+      <p>No photos found </p>
+    {% endif %}
 {% else %}
   <p>Please enter a username to search</p>
 {% endif %}
